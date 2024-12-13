@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/eb98e480-b8f2-4cb5-9f8c-6741de3bd371)
+
+
 <h1>協助注意以下事項：  </h1> 
 
 1. 有關Label資料集在Roboflow上的幀數設定，請同學設定為10 fps/sec，可以減少需標記圖片的數量
