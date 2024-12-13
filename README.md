@@ -1,5 +1,32 @@
 ![image](https://github.com/user-attachments/assets/eb98e480-b8f2-4cb5-9f8c-6741de3bd371)
 
+<h1> Labeling Data </h1>
+
+1. https://app.roboflow.com/yolo-lab2 透過roboflow標記資料
+2. 新增keypoints
+3. 標記時注意方向以免訓練出來結果相反
+
+0_Nose  
+1_LEye  
+2_REye  
+3_LEar  
+4_REar  
+5_LShoulder  
+6_RShoulder  
+7_LElbow  
+8_RElbow  
+9_LWrist  
+10_RWrist  
+11_LHip  
+12_RHip  
+13_LKnee  
+14_RKnee  
+15_LAnkle  
+16_RAnkle  
+
+
+
+
 
 <h1>協助注意以下事項：  </h1> 
 
