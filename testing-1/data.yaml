@@ -1,0 +1,38 @@
+flip_idx:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+kpt_shape:
+- 17
+- 3
+names:
+- players
+nc: 1
+roboflow:
+  license: CC BY 4.0
+  project: testing-enxrg
+  url: https://universe.roboflow.com/yolo-lab2/testing-enxrg/dataset/1
+  version: 1
+  workspace: yolo-lab2
+#test: ../test/images
+#train: ../train/images
+#val: ../valid/images
+
+test: C:\Users\user\Downloads\交大\深度學習\LAB3\testing-1\test\images
+train: C:\Users\user\Downloads\交大\深度學習\LAB3\testing-1\train\images
+val: C:\Users\user\Downloads\交大\深度學習\LAB3\testing-1\valid\images
+
