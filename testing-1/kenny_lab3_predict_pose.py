@@ -67,7 +67,8 @@ def classify_hand_and_foot_action(keypoints, facing_camera):
     return hand_action, foot_action
 
 
-
+# ==========================================================================================
+# 區分影片
 
 if __name__ == "__main__":
     # 載入訓練好的模型
@@ -138,3 +139,61 @@ if __name__ == "__main__":
     out.release()
 
     print(f"已將標註影片保存為：{output_video}")
+
+
+# ==========================================================================================
+# 區分圖片
+
+if __name__ == "__main__":
+    # 載入訓練好的模型
+    model = YOLO('best20.pt')  # 訓練過程中保存的最佳模型
+
+    # 設定測試資料夾和輸出資料夾
+    # input_folder = './test/images'
+    input_folder = '../Lab_3_Dataset-20241130T060726Z-001/Lab_3_Dataset/Fore_Back_Detection'
+    output_folder = './test/outputs'
+    os.makedirs(output_folder, exist_ok=True)  # 確保輸出資料夾存在
+
+    # 進行推論
+    results_pred = model.predict(
+        source=input_folder,  # 測試圖片資料夾
+        save=False,  # 不直接保存模型內建的標註結果，改用自訂繪製
+        device=0,  # 使用 GPU
+        imgsz=640  # 圖片大小
+    )
+
+    # 處理每張圖片
+    for i, result in enumerate(results_pred):
+        # 載入原始圖片
+        image_path = os.path.join(input_folder, result.path.split(os.sep)[-1])  # 確保對應文件名稱
+        img = cv2.imread(image_path)
+
+        # 遍歷每個人
+        for keypoints, box in zip(result.keypoints, result.boxes.xyxy):
+            # 從 Keypoints 對象中提取數據並轉為 NumPy
+            keypoints = keypoints.data.cpu().numpy()[0]  # 提取數據，轉為 (17, 3) 格式
+            box = box.cpu().numpy()  # 同樣處理 Bounding Box
+
+            # 根據人物在畫面中的位置判斷視角
+            person_center_y = (box[1] + box[3]) / 2
+            image_height = img.shape[0]
+
+            # 視角判斷
+            facing_camera = person_center_y < image_height / 2  # 上方人物認為面向鏡頭
+
+            # 判斷動作類型（Forehand 或 Backhand）和腳步動作
+            hand_action, foot_action = classify_hand_and_foot_action(keypoints, facing_camera)
+
+            # 繪製標註
+            color = (0, 255, 0) if hand_action == "forehand" else (0, 0, 255)
+            cv2.rectangle(img, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), color, 2)  # 繪製框
+            cv2.putText(
+                img, f"{hand_action} | {foot_action}", (int(box[0]), int(box[1]) - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2
+            )
+
+        # 保存標註後的圖片
+        output_path = os.path.join(output_folder, f"annotated_{os.path.basename(image_path)}")
+        cv2.imwrite(output_path, img)
+
+    print(f"所有圖片的預測結果已保存至資料夾：{output_folder}")
